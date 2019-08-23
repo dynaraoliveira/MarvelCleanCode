@@ -21,5 +21,6 @@ struct ComicsSeriesObjectData: Codable {
 }
 
 struct ComicsSeriesResult: Codable {
+    let title: String
     let thumbnail: Thumbnail
 }

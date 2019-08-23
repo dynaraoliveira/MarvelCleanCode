@@ -383,8 +383,8 @@
 		A5F3E182230FB603008FD902 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				A5F3E183230FB603008FD902 /* DetailsCollectionViewCell.swift */,
 				A5F3E184230FB603008FD902 /* DetailsCollectionViewCell.xib */,
+				A5F3E183230FB603008FD902 /* DetailsCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";

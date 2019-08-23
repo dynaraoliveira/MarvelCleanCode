@@ -9,16 +9,16 @@
 import UIKit
 
 class DetailsCollectionViewCell: UICollectionViewCell, Identifiable {
-
+    
     @IBOutlet weak var containerView: UIView?
     @IBOutlet weak var shadowView: UIView?
     @IBOutlet weak var detailsImageView: UIImageView?
     @IBOutlet weak var detailsLabel: UILabel?
     
-    var comic: ComicsItem? {
+    var comic: CharacterDetail.ViewModel.DisplayedComicsSeries? {
         didSet {
             detailsLabel?.text = comic?.name
-            fetchData(urlString: comic?.resourceURI ?? "")
+            detailsImageView?.loadImage(withURL: comic?.image ?? "")
         }
     }
     
@@ -27,25 +27,11 @@ class DetailsCollectionViewCell: UICollectionViewCell, Identifiable {
         shadowView?.shadow()
         containerView?.round()
     }
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         detailsImageView?.image = UIImage()
         detailsLabel?.text = ""
-    }
-    
-    func fetchData(urlString: String) {
-//        let marvelObjectManager = MarvelObjectManager()
-//        marvelObjectManager.fetchComicsSeriesObject(urlString: urlString) { (result) in
-//            switch result() {
-//            case .success(let comicsEventObject):
-//                if let comicsSeriesThumbnail = comicsEventObject.data.results.first?.thumbnail {
-//                    thumbnail = ThumbnailViewModel(thumbnail: comicsSeriesThumbnail)
-//                }
-//            case .failure:
-//                detailsImageView?.image = UIImage()
-//            }
-//        }
     }
     
 }

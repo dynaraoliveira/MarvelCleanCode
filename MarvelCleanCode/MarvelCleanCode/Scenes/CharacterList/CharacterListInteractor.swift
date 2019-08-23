@@ -17,7 +17,7 @@ class CharacterListInteractor: CharacterListBusinessLogic {
     var presenter: CharacterListPresentationLogic?
     
     private var characterWorker = CharacterWorker(characterListStore: MarvelObjectAPI(),
-                                          characterListCoreDataStoreProtocol: MarvelObjectCoreDataStore())
+                                                  characterListCoreDataStoreProtocol: MarvelObjectCoreDataStore())
     
     private var tabBarItemSelected: TabBarItemSelected?
     private var displayedCharacters: [Characters.FetchCharacterList.ViewModel.DisplayedCharacter] = []

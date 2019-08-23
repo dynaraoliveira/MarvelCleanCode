@@ -9,24 +9,42 @@
 import Foundation
 
 enum CharacterDetail {
+    struct ViewModel {
+        struct DisplayedComicsSeries {
+            var name: String
+            var image: String
+        }
+    }
+    
     enum FetchComics {
         struct Request {
-            var character: Character?
+            var character: Characters.FetchCharacterList.ViewModel.DisplayedCharacter?
         }
         
         struct Response {
-            var character: Character?
-            var comics: ComicsSeriesObject?
-            var series: ComicsSeriesObject?
+            var character: Characters.FetchCharacterList.ViewModel.DisplayedCharacter? 
+            var comics: [ViewModel.DisplayedComicsSeries]
+        }
+    }
+    
+    enum FetchSeries {
+        struct Request {
+            var character: Characters.FetchCharacterList.ViewModel.DisplayedCharacter?
         }
         
-        struct ViewModel {
-            struct DisplayedComicsSeries {
-                var name: String
-                var image: String
-            }
-            var displayedComics: [DisplayedComicsSeries]
-            var displayedSeries: [DisplayedComicsSeries]
+        struct Response {
+            var character: Characters.FetchCharacterList.ViewModel.DisplayedCharacter?
+            var series: [ViewModel.DisplayedComicsSeries]
+        }
+    }
+    
+    enum createFavoriteCharacter {
+        struct Request {
+            var character: Characters.FetchCharacterList.ViewModel.DisplayedCharacter?
+        }
+        
+        struct Response {
+            var character: Characters.FetchCharacterList.ViewModel.DisplayedCharacter?
         }
     }
 }

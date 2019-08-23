@@ -45,12 +45,12 @@ enum Characters {
     enum createFavoriteCharacter {
         struct Request {
             var character: Character
-            var displayedCharacters: [Characters.FetchCharacterList.ViewModel.DisplayedCharacter]
+            var displayedCharacters: [FetchCharacterList.ViewModel.DisplayedCharacter]
         }
         
         struct Response {
             var character: Character?
-            var displayedCharacters: [Characters.FetchCharacterList.ViewModel.DisplayedCharacter]
+            var displayedCharacters: [FetchCharacterList.ViewModel.DisplayedCharacter]
         }
     }
     

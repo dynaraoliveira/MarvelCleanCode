@@ -19,7 +19,6 @@ class CharacterListPresenter: CharacterListPresentationLogic {
     
     func presentMarvelObject(response: Characters.FetchCharacterList.Response) {
         var displayedCharacters: [Characters.FetchCharacterList.ViewModel.DisplayedCharacter] = []
-        displayedCharacters.append(contentsOf: response.displayedCharacters)
         
         if response.tabBarItemSelected == .favorites {
             for character in response.favoriteCharacters ?? [] {
@@ -33,6 +32,13 @@ class CharacterListPresenter: CharacterListPresentationLogic {
                 displayedCharacters.append(displayedCharacter)
             }
         } else {
+            for displayedCharacter in response.displayedCharacters {
+                var displayedCharactersModified = displayedCharacter
+                let favoriteCharacter = response.favoriteCharacters?.filter({ $0.id == displayedCharacter.id }).first
+                displayedCharactersModified.favorite = favoriteCharacter == nil ? false : true
+                displayedCharacters.append(displayedCharactersModified)
+            }
+            
             for character in response.marvelObject?.data?.data ?? [] {
                 let image = "\(character.thumbnail?.path ?? "").\(character.thumbnail?.thumbnailExtension ?? "")"
                 let favoriteCharacter = response.favoriteCharacters?.filter({ $0.id == character.id }).first

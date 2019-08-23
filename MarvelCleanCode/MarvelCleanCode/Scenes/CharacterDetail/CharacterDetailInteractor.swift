@@ -9,8 +9,9 @@
 import Foundation
 
 protocol CharacterDetailBusinessLogic {
-    func createFavoriteCharacter(request: Characters.createFavoriteCharacter.Request)
-    func fetchComicsSeries(request: CharacterDetail.FetchComics.Request)
+    func createFavoriteCharacter(request: CharacterDetail.createFavoriteCharacter.Request)
+    func fetchComics(request: CharacterDetail.FetchComics.Request)
+    func fetchSeries(request: CharacterDetail.FetchSeries.Request)
 }
 
 class CharacterDetailInteractor: CharacterDetailBusinessLogic {
@@ -18,40 +19,54 @@ class CharacterDetailInteractor: CharacterDetailBusinessLogic {
     var characterDetailWorker = CharacterDetailWorker(characterDetailStore: MarvelObjectAPI(),
                                                       characterDetailCoreDataStoreProtocol: MarvelObjectCoreDataStore())
     
-    func createFavoriteCharacter(request: Characters.createFavoriteCharacter.Request) {
-        characterDetailWorker.createFavoriteCharacter(request.character) { (character, error) in
-//            if error == nil {
-//                let response = Characters.createFavoriteCharacter.Response(character: character,
-//                                                                           displayedCharacters: request.displayedCharacters)
-//                presenter?.presentFavoriteCharacter(response: response)
-//            } else {
-//                presenter?.presentMessage(error?.localizedDescription ?? "Unknown error")
-//            }
+    func createFavoriteCharacter(request: CharacterDetail.createFavoriteCharacter.Request) {
+        guard let character = request.character?.character else { return }
+        characterDetailWorker.createFavoriteCharacter(character) { ( _, error) in
+            if error == nil {
+                guard let character = request.character else { return }
+                self.presenter?.presentCharacterDetail(character: character)
+            } else {
+                self.presenter?.presentMessage(error?.localizedDescription ?? "Unknown error")
+            }
         }
     }
     
-    func fetchComicsSeries(request: CharacterDetail.FetchComics.Request) {
-        for item in request.character?.comics?.items ?? [] {
-            characterDetailWorker.fetchComicsSeriesObject(urlString: item.resourceURI ?? "") { (result) in
-                switch result {
-                case .success(result: let comic):
-                    print(comic.code)
-                case .failure(error: let err):
-                    print("erro")
-//                    presenter?.presentMessage(err.localizedDescription)
+    func fetchComics(request: CharacterDetail.FetchComics.Request) {
+        guard let character = request.character?.character else { return }
+        var displayedComics: [CharacterDetail.ViewModel.DisplayedComicsSeries] = []
+        
+        characterDetailWorker.fetchComicsSeriesObject(urlString: character.comics?.collectionURI ?? "") { (result) in
+            switch result {
+            case .success(result: let comics):
+                for item in comics.data.results {
+                    let image = "\(item.thumbnail.path ?? "").\(item.thumbnail.thumbnailExtension ?? "")"
+                    let displayedComic = CharacterDetail.ViewModel.DisplayedComicsSeries(name: item.title,
+                                                                                         image: image)
+                    displayedComics.append(displayedComic)
                 }
+                self.presenter?.presentCharacterDetailComics(displayedComics: displayedComics)
+            case .failure(error: let err):
+                self.presenter?.presentMessage(err.localizedDescription)
             }
         }
+    }
+    
+    func fetchSeries(request: CharacterDetail.FetchSeries.Request) {
+        guard let character = request.character?.character else { return }
+        var displayedSeries: [CharacterDetail.ViewModel.DisplayedComicsSeries] = []
         
-        for item in request.character?.series?.items ?? [] {
-            characterDetailWorker.fetchComicsSeriesObject(urlString: item.resourceURI ?? "") { (result) in
-                switch result {
-                case .success(result: let comic):
-                    print(comic.code)
-                case .failure(error: let err):
-                    print("erro")
-                    //                    presenter?.presentMessage(err.localizedDescription)
+        characterDetailWorker.fetchComicsSeriesObject(urlString: character.series?.collectionURI ?? "") { (result) in
+            switch result {
+            case .success(result: let series):
+                for item in series.data.results {
+                    let image = "\(item.thumbnail.path ?? "").\(item.thumbnail.thumbnailExtension ?? "")"
+                    let displayedComic = CharacterDetail.ViewModel.DisplayedComicsSeries(name: item.title,
+                                                                                         image: image)
+                    displayedSeries.append(displayedComic)
                 }
+                self.presenter?.presentCharacterDetailSeries(displayedSeries: displayedSeries)
+            case .failure(error: let err):
+                self.presenter?.presentMessage(err.localizedDescription)
             }
         }
     }

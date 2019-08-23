@@ -22,7 +22,7 @@ class CharacterDetailViewController: UIViewController, CharacterDetailDisplayLog
     @IBOutlet weak var comicsCollectionView: UICollectionView?
     @IBOutlet weak var seriesCollectionView: UICollectionView?
     
-    private var interactor: CharacterDetailBusinessLogic?
+    var interactor: CharacterDetailBusinessLogic?
     
     var character: Characters.FetchCharacterList.ViewModel.DisplayedCharacter? {
         didSet {

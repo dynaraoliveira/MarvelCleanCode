@@ -57,7 +57,7 @@ class CharacterListPresenter: CharacterListPresentationLogic {
         getDisplayedCharacters(characters, response, &displayedCharacters)
         
         let viewModel = Characters.FetchCharacterList.ViewModel(displayedCharacters: displayedCharacters)
-        viewController?.displayFetchedOrders(viewModel: viewModel)
+        viewController?.displayFetchedCharacters(viewModel: viewModel)
     }
     
     func presentFavoriteCharacter(response: Characters.createFavoriteCharacter.Response) {
@@ -69,7 +69,7 @@ class CharacterListPresenter: CharacterListPresentationLogic {
             displayedCharactersModified.append(character)
         }
         let viewModel = Characters.FetchCharacterList.ViewModel(displayedCharacters: displayedCharactersModified)
-        viewController?.displayFetchedOrders(viewModel: viewModel)
+        viewController?.displayFetchedCharacters(viewModel: viewModel)
     }
     
     func presentMessage(_ message: String) {

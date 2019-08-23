@@ -13,15 +13,15 @@ protocol CharacterSelectionDelegate: class {
 }
 
 protocol CharacterListDisplayLogic: class {
-    func displayFetchedOrders(viewModel: Characters.FetchCharacterList.ViewModel)
+    func displayFetchedCharacters(viewModel: Characters.FetchCharacterList.ViewModel)
     func displayMessage(_ message: String)
 }
 
 class CharacterListViewController: UICollectionViewController, CharacterListDisplayLogic, Identifiable {
     
-    private var offset: Int?
-    private var interactor: CharacterListBusinessLogic?
-    private var router: CharacterListRoutingLogic?
+    var offset: Int?
+    var interactor: CharacterListBusinessLogic?
+    var router: CharacterListRoutingLogic?
     
     private var tabBarItemSelected: TabBarItemSelected {
         return TabBarItemSelected(rawValue: parent?.navigationController?.restorationIdentifier ?? "") ?? .characters
@@ -44,6 +44,7 @@ class CharacterListViewController: UICollectionViewController, CharacterListDisp
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
+        collectionView.accessibilityIdentifier = "CharacterCollectionView"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,7 +76,7 @@ class CharacterListViewController: UICollectionViewController, CharacterListDisp
     
     var displayedCharacters: [Characters.FetchCharacterList.ViewModel.DisplayedCharacter] = []
     
-    func displayFetchedOrders(viewModel: Characters.FetchCharacterList.ViewModel) {
+    func displayFetchedCharacters(viewModel: Characters.FetchCharacterList.ViewModel) {
         displayedCharacters = viewModel.displayedCharacters
         
         if let displayedCharacter = displayedCharacters.first {
@@ -112,9 +113,8 @@ class CharacterListViewController: UICollectionViewController, CharacterListDisp
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let character = displayedCharacters[indexPath.row]
         characterSelectionDelegate?.characterSelected(character)
-        if let detailsViewController = characterSelectionDelegate as? CharacterDetailViewController,
-            let detailsNavigationController = detailsViewController.navigationController {
-            router?.routeToShowOrder(view: splitViewController, detailsNavigationController: detailsNavigationController)
+        if let detailsViewController = characterSelectionDelegate as? CharacterDetailViewController {
+            router?.routeToShowOrder(view: splitViewController, detailsNavigationController: detailsViewController.navigationController)
         }
         
     }

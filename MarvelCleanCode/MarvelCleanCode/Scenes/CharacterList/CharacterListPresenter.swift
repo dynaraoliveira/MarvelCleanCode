@@ -17,41 +17,45 @@ protocol CharacterListPresentationLogic {
 class CharacterListPresenter: CharacterListPresentationLogic {
     weak var viewController: CharacterListDisplayLogic?
     
+    fileprivate func getDisplayedCharacters(_ characters: [Character],
+                                            _ response: Characters.FetchCharacterList.Response,
+                                            _ displayedCharacters: inout [Characters.FetchCharacterList.ViewModel.DisplayedCharacter]) {
+        for character in characters {
+            let image = "\(character.thumbnail?.path ?? "").\(character.thumbnail?.thumbnailExtension ?? "")"
+            let uriComics = character.comics?.collectionURI ?? ""
+            let uriSeries = character.series?.collectionURI ?? ""
+            let favoriteCharacter = response.favoriteCharacters?.filter({ $0.id == character.id }).first
+            let favorite = favoriteCharacter == nil ? false : true
+            let displayedCharacter = Characters.FetchCharacterList.ViewModel.DisplayedCharacter(id: character.id,
+                                                                                                name: character.name,
+                                                                                                image: image,
+                                                                                                favorite: favorite,
+                                                                                                description: character.resultDescription,
+                                                                                                uriComics: uriComics,
+                                                                                                uriSeries: uriSeries,
+                                                                                                character: character)
+            displayedCharacters.append(displayedCharacter)
+        }
+    }
+    
     func presentMarvelObject(response: Characters.FetchCharacterList.Response) {
         var displayedCharacters: [Characters.FetchCharacterList.ViewModel.DisplayedCharacter] = []
         
-        if response.tabBarItemSelected == .favorites {
-            for character in response.favoriteCharacters ?? [] {
-                let image = "\(character.thumbnail?.path ?? "").\(character.thumbnail?.thumbnailExtension ?? "")"
-                let displayedCharacter = Characters.FetchCharacterList.ViewModel.DisplayedCharacter(id: character.id,
-                                                                                                    name: character.name,
-                                                                                                    image: image,
-                                                                                                    favorite: true,
-                                                                                                    character: character,
-                                                                                                    description: character.resultDescription)
-                displayedCharacters.append(displayedCharacter)
-            }
-        } else {
+        var characters: [Character] = []
+        if response.tabBarItemSelected == .characters {
             for displayedCharacter in response.displayedCharacters {
                 var displayedCharactersModified = displayedCharacter
                 let favoriteCharacter = response.favoriteCharacters?.filter({ $0.id == displayedCharacter.id }).first
                 displayedCharactersModified.favorite = favoriteCharacter == nil ? false : true
                 displayedCharacters.append(displayedCharactersModified)
             }
-            
-            for character in response.marvelObject?.data?.data ?? [] {
-                let image = "\(character.thumbnail?.path ?? "").\(character.thumbnail?.thumbnailExtension ?? "")"
-                let favoriteCharacter = response.favoriteCharacters?.filter({ $0.id == character.id }).first
-                let favorite = favoriteCharacter == nil ? false : true
-                let displayedCharacter = Characters.FetchCharacterList.ViewModel.DisplayedCharacter(id: character.id,
-                                                                                                    name: character.name,
-                                                                                                    image: image,
-                                                                                                    favorite: favorite,
-                                                                                                    character: character,
-                                                                                                    description: character.resultDescription)
-                displayedCharacters.append(displayedCharacter)
-            }
+            characters = response.marvelObject?.data?.data ?? []
+        } else {
+            characters = response.favoriteCharacters ?? []
         }
+        
+        getDisplayedCharacters(characters, response, &displayedCharacters)
+        
         let viewModel = Characters.FetchCharacterList.ViewModel(displayedCharacters: displayedCharacters)
         viewController?.displayFetchedOrders(viewModel: viewModel)
     }

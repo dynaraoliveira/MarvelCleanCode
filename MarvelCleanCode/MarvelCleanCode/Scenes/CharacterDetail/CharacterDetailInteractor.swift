@@ -32,10 +32,9 @@ class CharacterDetailInteractor: CharacterDetailBusinessLogic {
     }
     
     func fetchComics(request: CharacterDetail.FetchComics.Request) {
-        guard let character = request.character?.character else { return }
         var displayedComics: [CharacterDetail.ViewModel.DisplayedComicsSeries] = []
         
-        characterDetailWorker.fetchComicsSeriesObject(urlString: character.comics?.collectionURI ?? "") { (result) in
+        characterDetailWorker.fetchComicsSeriesObject(urlString: request.character?.uriComics ?? "") { (result) in
             switch result {
             case .success(result: let comics):
                 for item in comics.data.results {
@@ -52,10 +51,9 @@ class CharacterDetailInteractor: CharacterDetailBusinessLogic {
     }
     
     func fetchSeries(request: CharacterDetail.FetchSeries.Request) {
-        guard let character = request.character?.character else { return }
         var displayedSeries: [CharacterDetail.ViewModel.DisplayedComicsSeries] = []
         
-        characterDetailWorker.fetchComicsSeriesObject(urlString: character.series?.collectionURI ?? "") { (result) in
+        characterDetailWorker.fetchComicsSeriesObject(urlString: request.character?.uriSeries ?? "") { (result) in
             switch result {
             case .success(result: let series):
                 for item in series.data.results {

@@ -76,6 +76,7 @@ class MarvelObjectCoreDataStore: CharacterListCoreDataStoreProtocol & CharacterD
         let serie = NSEntityDescription
             .insertNewObject(forEntityName: "Comics",
                              into: privateManagedObjectContext) as! FavoriteComics
+        
         var serieItems: [FavoriteComicsItem] = []
         for item in character.series?.items ?? [] {
             let serieItem = NSEntityDescription
@@ -84,7 +85,8 @@ class MarvelObjectCoreDataStore: CharacterListCoreDataStoreProtocol & CharacterD
             serieItem.fromComicsItem(item, comics: serie)
             serieItems.append(serieItem)
         }
-        serie.fromComics(type: .series, character: favoriteCharacter, items: serieItems)
+        serie.fromComics(type: .series, character: favoriteCharacter, items: serieItems,
+                         collectionURI: character.series?.collectionURI ?? "")
         
         let comic = NSEntityDescription
             .insertNewObject(forEntityName: "Comics",
@@ -97,7 +99,8 @@ class MarvelObjectCoreDataStore: CharacterListCoreDataStoreProtocol & CharacterD
             comicItem.fromComicsItem(item, comics: comic)
             comicItems.append(comicItem)
         }
-        comic.fromComics(type: .comics, character: favoriteCharacter, items: comicItems)
+        comic.fromComics(type: .comics, character: favoriteCharacter, items: comicItems,
+                         collectionURI: character.comics?.collectionURI ?? "")
         
         let favoriteThumbnail = NSEntityDescription
             .insertNewObject(forEntityName: "Thumbnail",

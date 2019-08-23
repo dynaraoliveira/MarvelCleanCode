@@ -36,10 +36,9 @@ class CharacterListInteractor: CharacterListBusinessLogic {
         tabBarItemSelected = request.tabBarItemSelected
         displayedCharacters = request.displayedCharacters
         
-        switch tabBarItemSelected {
-        case .favorites?:
+        if tabBarItemSelected == .favorites {
             fetchFavoriteCharacters()
-        case .characters?:
+        } else {
             characterWorker.fetchCharacterList(offset: request.offset) { (result) in
                 switch result {
                 case .success(result: let marvelObject):
@@ -49,8 +48,6 @@ class CharacterListInteractor: CharacterListBusinessLogic {
                     self.presenter?.presentMessage(err.localizedDescription)
                 }
             }
-        case .none:
-            presenter?.presentMessage("Unknown error")
         }
     }
     

@@ -15,6 +15,7 @@ extension FavoriteComics {
         return NSFetchRequest<FavoriteComics>(entityName: "Comics")
     }
 
+    @NSManaged public var collectionURI: String?
     @NSManaged public var characterComics: FavoriteCharacter?
     @NSManaged public var characterSeries: FavoriteCharacter?
     @NSManaged public var items: NSSet?

@@ -12,11 +12,10 @@ import CoreData
 
 public class FavoriteComicsItem: NSManagedObject {
     func toComicsItem() -> ComicsItem {
-        return ComicsItem(resourceURI: resourceURI, name: name)
+        return ComicsItem(resourceURI: "", name: name)
     }
     
     func fromComicsItem(_ comicsItem: ComicsItem, comics: FavoriteComics) {
-        self.resourceURI = comicsItem.resourceURI
         self.name = comicsItem.name
         self.comics = comics
     }

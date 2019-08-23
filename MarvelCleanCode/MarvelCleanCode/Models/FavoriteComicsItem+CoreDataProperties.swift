@@ -16,6 +16,5 @@ extension FavoriteComicsItem {
     }
 
     @NSManaged public var name: String?
-    @NSManaged public var resourceURI: String?
     @NSManaged public var comics: FavoriteComics?
 }

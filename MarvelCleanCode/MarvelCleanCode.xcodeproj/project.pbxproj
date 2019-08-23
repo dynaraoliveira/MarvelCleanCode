@@ -303,8 +303,8 @@
 		A5F3E164230FB5A2008FD902 /* Provider */ = {
 			isa = PBXGroup;
 			children = (
-				A5F3E165230FB5A2008FD902 /* MarvelObjectApiProvider.swift */,
 				A5F3E166230FB5A2008FD902 /* BaseProvider */,
+				A5F3E165230FB5A2008FD902 /* MarvelObjectApiProvider.swift */,
 			);
 			path = Provider;
 			sourceTree = "<group>";

@@ -21,13 +21,13 @@ typealias ComicsSeriesObjectCallback = (Result<ComicsSeriesObject>) -> Void
 class CharacterDetailWorker {
     var characterDetailStore: CharacterDetailStoreProtocol
     var characterDetailCoreDataStoreProtocol: CharacterDetailCoreDataStoreProtocol
-
+    
     init(characterDetailStore: CharacterDetailStoreProtocol,
          characterDetailCoreDataStoreProtocol: CharacterDetailCoreDataStoreProtocol) {
         self.characterDetailStore = characterDetailStore
         self.characterDetailCoreDataStoreProtocol = characterDetailCoreDataStoreProtocol
     }
-
+    
     func fetchComicsSeriesObject(urlString: String, completionHandler: @escaping ComicsSeriesObjectCallback) {
         characterDetailStore.fetchComicsSeriesObject(urlString: urlString) { (result) in
             completionHandler(result)

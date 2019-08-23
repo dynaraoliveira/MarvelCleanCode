@@ -35,8 +35,10 @@ enum Characters {
                 var name: String
                 var image: String
                 var favorite: Bool
-                var character: Character
                 var description: String
+                var uriComics: String
+                var uriSeries: String
+                var character: Character
             }
             var displayedCharacters: [DisplayedCharacter]
         }

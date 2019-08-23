@@ -21,10 +21,10 @@ public class FavoriteCharacter: NSManagedObject {
     }
     
     func fromCharacter(_ character: Character, favoriteThumbnail: FavoriteThumbnail, comics: FavoriteComics, series: FavoriteComics) {
-        id = Int64(character.id)
-        name = character.name
-        resultDescription = character.resultDescription
-        thumbnail = favoriteThumbnail
+        self.id = Int64(character.id)
+        self.name = character.name
+        self.resultDescription = character.resultDescription
+        self.thumbnail = favoriteThumbnail
         self.comics = comics
         self.series = series
     }

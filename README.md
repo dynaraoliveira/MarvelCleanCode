@@ -9,8 +9,8 @@ Mais informações: https://developer.marvel.com/docs.
 
 Incluir no diretório Build Config, os arquivos:
 
-debug.xcconfig
-release.xcconfig
+* debug.xcconfig
+* release.xcconfig
 ```
 PUBLIC_KEY = /* chave pública */
 PRIVATE_KEY = /* chave privada */
